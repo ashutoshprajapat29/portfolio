@@ -62,9 +62,8 @@ npm run build
 
 ---
 
-## 📬 Contact Ashutosh
+## 📬 Connect with Ashutosh
 
-- **Email**: [ashutoshprajapat2932005@gmail.com](mailto:ashutoshprajapat2932005@gmail.com)
-- **Phone**: +91 8602865384
 - **LinkedIn**: [linkedin.com/in/ashutosh-prajapat-061822328](https://www.linkedin.com/in/ashutosh-prajapat-061822328)
 - **GitHub**: [github.com/ashutoshprajapat29](https://github.com/ashutoshprajapat29)
+- **Portfolio Contact Form**: [Live Form](https://github.com/ashutoshprajapat29/portfolio) *(Powered by Formspree spam protection)*

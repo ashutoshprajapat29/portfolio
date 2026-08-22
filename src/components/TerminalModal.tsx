@@ -69,7 +69,7 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({
               <div><span className="text-amber-400 font-mono">skills</span> : Tech stack</div>
               <div><span className="text-amber-400 font-mono">projects</span> : Shipped apps</div>
               <div><span className="text-amber-400 font-mono">education</span> : LNCT &amp; Schooling</div>
-              <div><span className="text-amber-400 font-mono">contact</span> : Email &amp; Phone</div>
+              <div><span className="text-amber-400 font-mono">contact</span> : Verified links &amp; channels</div>
               <div><span className="text-amber-400 font-mono">theme</span> : Toggle dark/light</div>
               <div><span className="text-amber-400 font-mono">confetti</span> : Celebrate 🎉</div>
               <div><span className="text-amber-400 font-mono">clear</span> : Clear screen</div>
@@ -135,15 +135,14 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({
         break;
 
       case 'contact':
-      case 'email':
-      case 'phone':
+      case 'connect':
         resultNode = (
           <div className="space-y-1 text-xs text-slate-300">
-            <p><span className="text-slate-500">Email:</span> <span className="text-teal-400">{portfolioData.personal.email}</span></p>
-            <p><span className="text-slate-500">Phone:</span> +91 8602865384</p>
-            <p><span className="text-slate-500">Location:</span> {portfolioData.personal.location}</p>
-            <p><span className="text-slate-500">GitHub:</span> {portfolioData.personal.github}</p>
+            <p><span className="text-teal-400 font-semibold">Verified Channels:</span></p>
+            <p><span className="text-slate-500">Contact Form:</span> Scroll to #contact on the portfolio</p>
             <p><span className="text-slate-500">LinkedIn:</span> {portfolioData.personal.linkedin}</p>
+            <p><span className="text-slate-500">GitHub:</span> {portfolioData.personal.github}</p>
+            <p><span className="text-slate-500">Location:</span> {portfolioData.personal.location}</p>
           </div>
         );
         break;

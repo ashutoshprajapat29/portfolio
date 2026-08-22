@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import { 
-  Mail, 
   Send, 
-  Copy, 
-  Check, 
   MapPin, 
-  Phone,
   AlertCircle,
   CheckCircle2,
-  Inbox,
-  ExternalLink,
-  RotateCcw
+  ShieldCheck,
+  RotateCcw,
+  MessageSquareCode,
+  ExternalLink
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { portfolioData } from '../data/portfolioData';
@@ -36,8 +33,6 @@ interface FormErrors {
 
 export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
   const { personal } = portfolioData;
-  const [copiedEmail, setCopiedEmail] = useState(false);
-  const [copiedPhone, setCopiedPhone] = useState(false);
   
   const [formData, setFormData] = useState<FormState>({
     name: '',
@@ -50,8 +45,6 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [submittedSuccess, setSubmittedSuccess] = useState(false);
-
-  const phoneNumber = "+91 8602865384";
 
   // Validate form fields in real-time
   const validateField = (field: keyof FormState, value: string): string | undefined => {
@@ -92,20 +85,6 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
     }
   };
 
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(personal.email);
-    setCopiedEmail(true);
-    onShowToast("Email address copied to clipboard!");
-    setTimeout(() => setCopiedEmail(false), 3000);
-  };
-
-  const handleCopyPhone = () => {
-    navigator.clipboard.writeText(phoneNumber);
-    setCopiedPhone(true);
-    onShowToast("Phone number copied to clipboard!");
-    setTimeout(() => setCopiedPhone(false), 3000);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -135,23 +114,22 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
     setSubmitting(true);
 
     try {
-      // If user has a Formspree ID configured, post to Formspree
-      if (personal.formspreeId && personal.formspreeId !== "YOUR_FORMSPREE_ID") {
-        const res = await fetch(`https://formspree.io/f/${personal.formspreeId}`, {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
-        });
+      // Secure submission via Formspree
+      const endpoint = personal.formspreeId 
+        ? `https://formspree.io/f/${personal.formspreeId}` 
+        : 'https://formspree.io/f/xwlezngo';
 
-        if (!res.ok) {
-          throw new Error('Failed to send via Formspree');
-        }
-      } else {
-        // Simulated network delay
-        await new Promise(r => setTimeout(r, 700));
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to send message via Formspree');
       }
 
       setSubmitting(false);
@@ -163,10 +141,10 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
         origin: { y: 0.65 }
       });
 
-      onShowToast("Message sent successfully! Ashutosh will receive it in his Gmail.", "success");
+      onShowToast("Message sent securely! Ashutosh will respond shortly.", "success");
     } catch (err) {
       setSubmitting(false);
-      onShowToast("Failed to send automatically. You can email Ashutosh directly!", "error");
+      onShowToast("Failed to transmit. Please try connecting via LinkedIn!", "error");
     }
   };
 
@@ -176,9 +154,6 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
     setErrors({});
     setSubmittedSuccess(false);
   };
-
-  // Direct mailto link as fallback
-  const mailtoLink = `mailto:${personal.email}?subject=${encodeURIComponent(formData.subject || 'Portfolio Inquiry')}&body=${encodeURIComponent(`Hi Ashutosh,\n\nName: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
 
   return (
     <section id="contact" className="py-20 relative">
@@ -193,13 +168,13 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
             Let's Connect &amp; <span className="text-gradient">Collaborate</span>
           </h2>
           <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
-            Seeking Software Engineering or Web Development internships. Feel free to reach out directly via email, phone, or this interactive message form.
+            Have a freelance project, software internship opportunity, or technical inquiry? Send a secure message directly through the form below.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           
-          {/* Left Column: Direct Info & How Responses Are Received (5 Cols) */}
+          {/* Left Column: Verified Channels & Spam-Protected Communication (5 Cols) */}
           <div className="lg:col-span-5 space-y-6">
             
             {/* Availability Banner Card */}
@@ -210,70 +185,68 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-teal-500"></span>
                 </span>
                 <h3 className="font-bold text-slate-900 dark:text-white text-base">
-                  Current Status &amp; Goals
+                  Current Availability
                 </h3>
               </div>
               <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
-                3rd-Year Computer Science undergraduate actively available for <span className="font-semibold text-slate-900 dark:text-white">Freelance Client Projects, Full-Stack Web Development, and Software Engineering Internships</span>.
+                Open for <span className="font-semibold text-slate-900 dark:text-white">Freelance Client Projects, Custom Full-Stack Web Development, and Software Engineering Internships</span>.
               </p>
             </div>
 
-            {/* Delivery Explanation Card: How responses reach you */}
-            <div className="glass-card rounded-2xl p-5 space-y-3 bg-gradient-to-br from-teal-500/5 via-indigo-500/5 to-purple-500/5 border border-teal-500/20">
+            {/* Spam & Fraud Protection Security Card */}
+            <div className="glass-card rounded-2xl p-5 space-y-2.5 bg-gradient-to-br from-teal-500/5 via-indigo-500/5 to-purple-500/5 border border-teal-500/20">
               <div className="flex items-center gap-2 text-teal-600 dark:text-teal-300 font-semibold text-xs uppercase font-mono">
-                <Inbox className="w-4 h-4" />
-                <span>How will you receive messages?</span>
+                <ShieldCheck className="w-4 h-4 text-teal-400" />
+                <span>Spam-Protected Direct Routing</span>
               </div>
               <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                When anyone submits this form, it delivers the sender's details, inquiry topic, and message directly to your personal email inbox (<span className="font-mono text-teal-600 dark:text-teal-400 font-bold">{personal.email}</span>) with instant reply capability.
+                To protect against spam and fraud, all inquiries submitted through this form are securely filtered and forwarded directly to Ashutosh's verified inbox in real-time.
               </p>
             </div>
 
-            {/* Quick Copy Contact Tiles */}
+            {/* Verified Professional Channels */}
             <div className="space-y-3">
-              {/* Email Tile */}
-              <div className="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+              {/* LinkedIn Direct Message Tile */}
+              <a
+                href={personal.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className="glass-card rounded-2xl p-4 flex items-center justify-between gap-3 hover:border-teal-500/40 hover:scale-[1.01] transition-all group"
+              >
                 <div className="flex items-center gap-3 overflow-hidden">
-                  <div className="p-2.5 rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20 shrink-0">
-                    <Mail className="w-5 h-5" />
+                  <div className="p-2.5 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 shrink-0 group-hover:scale-110 transition-transform">
+                    <LinkedinIcon className="w-5 h-5" />
                   </div>
-                  <div className="truncate">
-                    <span className="text-[11px] font-mono text-slate-400 block">Direct Email</span>
-                    <span className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white truncate block">
-                      {personal.email}
+                  <div>
+                    <span className="text-[11px] font-mono text-slate-400 block">Professional Network</span>
+                    <span className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white block group-hover:text-teal-400 transition-colors">
+                      Connect on LinkedIn
                     </span>
                   </div>
                 </div>
-                <button
-                  onClick={handleCopyEmail}
-                  className="p-2 rounded-xl text-slate-500 hover:text-teal-400 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-white/5 hover:border-teal-500/40 transition-colors shrink-0 cursor-pointer"
-                  title="Copy email address"
-                >
-                  {copiedEmail ? <Check className="w-4 h-4 text-teal-400" /> : <Copy className="w-4 h-4" />}
-                </button>
-              </div>
+                <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-teal-400 transition-colors shrink-0" />
+              </a>
 
-              {/* Phone Tile */}
-              <div className="glass-card rounded-2xl p-4 flex items-center justify-between gap-3">
+              {/* GitHub Collaboration Tile */}
+              <a
+                href={personal.github}
+                target="_blank"
+                rel="noreferrer"
+                className="glass-card rounded-2xl p-4 flex items-center justify-between gap-3 hover:border-teal-500/40 hover:scale-[1.01] transition-all group"
+              >
                 <div className="flex items-center gap-3 overflow-hidden">
-                  <div className="p-2.5 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shrink-0">
-                    <Phone className="w-5 h-5" />
+                  <div className="p-2.5 rounded-xl bg-slate-500/10 text-slate-700 dark:text-slate-300 border border-slate-500/20 shrink-0 group-hover:scale-110 transition-transform">
+                    <GithubIcon className="w-5 h-5" />
                   </div>
-                  <div className="truncate">
-                    <span className="text-[11px] font-mono text-slate-400 block">Direct Phone</span>
-                    <span className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white truncate block">
-                      {phoneNumber}
+                  <div>
+                    <span className="text-[11px] font-mono text-slate-400 block">Open Source &amp; Code</span>
+                    <span className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white block group-hover:text-teal-400 transition-colors">
+                      github.com/ashutoshprajapat29
                     </span>
                   </div>
                 </div>
-                <button
-                  onClick={handleCopyPhone}
-                  className="p-2 rounded-xl text-slate-500 hover:text-indigo-400 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-white/5 hover:border-indigo-500/40 transition-colors shrink-0 cursor-pointer"
-                  title="Copy phone number"
-                >
-                  {copiedPhone ? <Check className="w-4 h-4 text-indigo-400" /> : <Copy className="w-4 h-4" />}
-                </button>
-              </div>
+                <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-teal-400 transition-colors shrink-0" />
+              </a>
 
               {/* Location Tile */}
               <div className="glass-card rounded-2xl p-4 flex items-center gap-3">
@@ -287,29 +260,6 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                   </span>
                 </div>
               </div>
-            </div>
-
-            {/* Social Network Icons */}
-            <div className="pt-2 flex items-center gap-3">
-              <span className="text-xs font-mono text-slate-500">Profiles:</span>
-              <a
-                href={personal.github}
-                target="_blank"
-                rel="noreferrer"
-                className="p-2.5 rounded-xl glass-card text-slate-600 dark:text-slate-300 hover:text-teal-400 hover:scale-110 transition-all"
-                aria-label="GitHub Profile"
-              >
-                <GithubIcon className="w-4 h-4" />
-              </a>
-              <a
-                href={personal.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                className="p-2.5 rounded-xl glass-card text-slate-600 dark:text-slate-300 hover:text-teal-400 hover:scale-110 transition-all"
-                aria-label="LinkedIn Profile"
-              >
-                <LinkedinIcon className="w-4 h-4" />
-              </a>
             </div>
 
           </div>
@@ -326,27 +276,29 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                   </div>
                   <div className="space-y-1">
                     <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
-                      Message Sent Successfully!
+                      Message Transmitted Successfully!
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-md mx-auto">
-                      Thank you, <span className="font-semibold text-teal-500">{formData.name}</span>. Your message has been transmitted and delivered to Ashutosh's inbox.
+                      Thank you, <span className="font-semibold text-teal-500">{formData.name}</span>. Your message has been routed directly to Ashutosh.
                     </p>
                   </div>
 
                   <div className="pt-4 flex flex-wrap items-center justify-center gap-3">
                     <button
                       onClick={handleReset}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
                     >
                       <RotateCcw className="w-4 h-4" />
                       <span>Send Another Message</span>
                     </button>
                     <a
-                      href={mailtoLink}
+                      href={personal.linkedin}
+                      target="_blank"
+                      rel="noreferrer"
                       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-teal-500 to-indigo-600 hover:from-teal-400 hover:to-indigo-500 transition-all shadow-md shadow-teal-500/20"
                     >
-                      <ExternalLink className="w-4 h-4" />
-                      <span>Open in Email App</span>
+                      <LinkedinIcon className="w-4 h-4" />
+                      <span>Connect on LinkedIn</span>
                     </a>
                   </div>
                 </div>
@@ -359,7 +311,7 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                       <span className="text-[11px] font-mono font-normal text-slate-400">* Required fields</span>
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                      Fill out the form below with live validation. Responses will be delivered to Ashutosh's Gmail.
+                      Fill out the form below with live validation. Your details are sent through a secure anti-spam pipeline.
                     </p>
                   </div>
 
@@ -384,7 +336,7 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                             value={formData.name}
                             onBlur={() => handleBlur('name')}
                             onChange={(e) => handleChange('name', e.target.value)}
-                            placeholder="e.g. Sarah Connor"
+                            placeholder="e.g. Alex Johnson"
                             className={`w-full px-4 py-2.5 text-xs sm:text-sm rounded-xl bg-slate-50 dark:bg-slate-800/80 border text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none transition-colors ${
                               touched.name && errors.name
                                 ? 'border-rose-500 focus:border-rose-500'
@@ -405,7 +357,7 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between">
                           <label className="block text-xs font-mono font-medium text-slate-700 dark:text-slate-300">
-                            Email Address *
+                            Your Email Address *
                           </label>
                           {touched.email && !errors.email && (
                             <span className="text-[10px] text-teal-400 flex items-center gap-1 font-mono">
@@ -420,7 +372,7 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                             value={formData.email}
                             onBlur={() => handleBlur('email')}
                             onChange={(e) => handleChange('email', e.target.value)}
-                            placeholder="sarah@company.com"
+                            placeholder="alex@company.com"
                             className={`w-full px-4 py-2.5 text-xs sm:text-sm rounded-xl bg-slate-50 dark:bg-slate-800/80 border text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none transition-colors ${
                               touched.email && errors.email
                                 ? 'border-rose-500 focus:border-rose-500'
@@ -442,7 +394,7 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between">
                         <label className="block text-xs font-mono font-medium text-slate-700 dark:text-slate-300">
-                          Subject / Topic (Optional)
+                          Inquiry Topic / Project (Optional)
                         </label>
                         {formData.subject && !errors.subject && (
                           <span className="text-[10px] text-teal-400 flex items-center gap-1 font-mono">
@@ -455,7 +407,7 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                         value={formData.subject}
                         onBlur={() => handleBlur('subject')}
                         onChange={(e) => handleChange('subject', e.target.value)}
-                        placeholder="e.g. Software Engineer Internship Discussion"
+                        placeholder="e.g. Freelance Web Application / Internship Inquiry"
                         className={`w-full px-4 py-2.5 text-xs sm:text-sm rounded-xl bg-slate-50 dark:bg-slate-800/80 border text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none transition-colors ${
                           touched.subject && errors.subject
                             ? 'border-rose-500 focus:border-rose-500'
@@ -491,7 +443,7 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                         value={formData.message}
                         onBlur={() => handleBlur('message')}
                         onChange={(e) => handleChange('message', e.target.value)}
-                        placeholder="Hi Ashutosh, I came across your AgroAid-Ai and WearLoop projects and would love to discuss an internship opportunity..."
+                        placeholder="Hi Ashutosh, I would like to discuss a web development opportunity with you..."
                         className={`w-full px-4 py-2.5 text-xs sm:text-sm rounded-xl bg-slate-50 dark:bg-slate-800/80 border text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none transition-colors resize-none ${
                           touched.message && errors.message
                             ? 'border-rose-500 focus:border-rose-500'
@@ -507,7 +459,7 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                       )}
                     </div>
 
-                    {/* Action Buttons: Submit & Direct Mailto */}
+                    {/* Action Buttons: Submit & LinkedIn Connect */}
                     <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
                       <button
                         type="submit"
@@ -517,23 +469,25 @@ export const Contact: React.FC<ContactProps> = ({ onShowToast }) => {
                         {submitting ? (
                           <span className="flex items-center gap-2">
                             <span className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
-                            Transmitting Message...
+                            Transmitting Securely...
                           </span>
                         ) : (
                           <>
-                            <span>Send Message</span>
+                            <span>Send Secure Message</span>
                             <Send className="w-4 h-4" />
                           </>
                         )}
                       </button>
 
                       <a
-                        href={mailtoLink}
-                        className="w-full sm:w-auto px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-white/10 transition-colors flex items-center justify-center gap-2"
-                        title="Send directly using your computer's default email app"
+                        href={personal.linkedin}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-full sm:w-auto px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700/80 border border-slate-200 dark:border-white/10 transition-colors flex items-center justify-center gap-2"
+                        title="Connect directly on LinkedIn"
                       >
-                        <ExternalLink className="w-4 h-4 text-teal-400" />
-                        <span>Email Directly</span>
+                        <MessageSquareCode className="w-4 h-4 text-teal-400" />
+                        <span>Message on LinkedIn</span>
                       </a>
                     </div>
                   </form>

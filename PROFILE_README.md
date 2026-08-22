@@ -5,9 +5,6 @@
   [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=3000&pause=1000&color=14B8A6&center=true&vCenter=true&width=650&lines=Full+Stack+Web+Developer;MERN+Stack+%26+GenAI+Specialist;Freelance+Web+Developer;3rd-Year+CSE+Undergrad+%40+LNCT+Bhopal)](https://git.io/typing-svg)
 
   <p align="center">
-    <a href="mailto:ashutoshprajapat2932005@gmail.com">
-      <img src="https://img.shields.io/badge/Email-ashutoshprajapat2932005%40gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" />
-    </a>
     <a href="https://www.linkedin.com/in/ashutosh-prajapat-061822328">
       <img src="https://img.shields.io/badge/LinkedIn-ashutosh--prajapat-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
     </a>
@@ -110,9 +107,9 @@
 ---
 
 <div align="center">
-  <h3>🤝 Let's Connect & Build Something Great!</h3>
-  <p>Feel free to reach out for freelance inquiries, collaboration, or software internship opportunities.</p>
+  <h3>🤝 Let's Connect &amp; Build Something Great!</h3>
+  <p>Feel free to reach out for freelance client projects, web applications, or software engineering internship opportunities.</p>
   <p>
-    📞 <b>Phone</b>: <code>+91 8602865384</code> • 📧 <b>Email</b>: <code>ashutoshprajapat2932005@gmail.com</code>
+    🔗 <b>LinkedIn</b>: <a href="https://www.linkedin.com/in/ashutosh-prajapat-061822328">linkedin.com/in/ashutosh-prajapat-061822328</a> • 🌐 <b>GitHub</b>: <a href="https://github.com/ashutoshprajapat29">github.com/ashutoshprajapat29</a>
   </p>
 </div>

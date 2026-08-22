@@ -170,9 +170,10 @@ export const Hero: React.FC<HeroProps> = ({ openTerminal, darkMode = true }) => 
                 <LinkedinIcon className="w-4 h-4" />
               </a>
               <a
-                href={`mailto:${personal.email}`}
+                href="#contact"
                 className="p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-teal-400 hover:bg-slate-100 dark:hover:bg-white/5 border border-slate-200 dark:border-white/5 transition-all hover:scale-110"
-                aria-label="Email"
+                aria-label="Send Message"
+                title="Send Message"
               >
                 <Mail className="w-4 h-4" />
               </a>

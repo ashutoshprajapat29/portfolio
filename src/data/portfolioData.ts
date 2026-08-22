@@ -11,7 +11,7 @@ export const portfolioData: PortfolioData = {
     subtitle: "3rd-Year Computer Science & Engineering undergraduate passionate about building responsive full-stack applications with the MERN stack, Generative AI integration, and scalable APIs.",
     availabilityBadge: "🟢 Available for Freelance Projects & Internships",
     location: "Bhopal, MP, India",
-    email: "ashutoshprajapat2932005@gmail.com",
+    email: "",
     github: "https://github.com/ashutoshprajapat29",
     linkedin: "https://www.linkedin.com/in/ashutosh-prajapat-061822328",
     twitter: "",

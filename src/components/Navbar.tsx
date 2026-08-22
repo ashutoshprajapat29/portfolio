@@ -5,7 +5,6 @@ import {
   Terminal, 
   Menu, 
   X, 
-  FileDown, 
   Code2
 } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
@@ -93,15 +92,12 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode, openTermi
             {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
           </button>
 
-          {/* Resume Download CTA */}
+          {/* Contact / Connect CTA */}
           <a
-            href={portfolioData.personal.resumeUrl}
-            target="_blank"
-            rel="noreferrer"
+            href="#contact"
             className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-teal-500 to-indigo-600 hover:from-teal-400 hover:to-indigo-500 shadow-md shadow-teal-500/20 transition-all hover:scale-[1.02]"
           >
-            <FileDown className="w-3.5 h-3.5" />
-            <span>Resume</span>
+            <span>Get In Touch</span>
           </a>
         </div>
 
@@ -152,13 +148,11 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode, openTermi
               <span>Open Interactive CLI</span>
             </button>
             <a
-              href={portfolioData.personal.resumeUrl}
-              target="_blank"
-              rel="noreferrer"
+              href="#contact"
+              onClick={() => setMobileMenuOpen(false)}
               className="flex items-center justify-center gap-2 w-full py-2 text-xs font-semibold text-white bg-gradient-to-r from-teal-500 to-indigo-600 rounded-lg shadow-md"
             >
-              <FileDown className="w-4 h-4" />
-              <span>Download Resume</span>
+              <span>Get In Touch</span>
             </a>
           </div>
         </div>
